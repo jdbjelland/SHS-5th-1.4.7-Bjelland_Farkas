@@ -30,10 +30,9 @@ def frame(original_image, color, percent_of_side):
     drawing_layer.rectangle((0, height, width, height-thickness), fill=(r, g, b, 255)) # bottom
     drawing_layer.rectangle((width, 0, width-thickness, height), fill=(r, g, b, 255)) #right
     
-    
     # Make the new image, starting with all transparent
     #frame_image = PIL.Image.new('RGBA', (width, height), (r, g, b, 255))
-    crest = PIL.Image.open(os.path.join(os.getcwd(), 'farkas.jpeg'))
+    crest = PIL.Image.open(os.path.join(os.getcwd(), 'farkas.jpeg')) #Includes family crest, which is 'farkas.jpeg'
     crest_size = ((height/9))
     small_crest = crest.resize((crest_size,crest_size))
     result = original_image.copy()
@@ -73,24 +72,6 @@ def get_images(directory=None):
             pass # do nothing with errors tying to open non-images
     return image_list, file_list
     
-    """    
-def pasting(original_image):
-    
-    # Make the new image, starting with all transparent
-    result = original_image.copy()
-    design = PIL.Image.open(os.path.join(os.getcwd(), 'farkas.jpeg'))
-    
-    width, height = design.size
-    
-    use_decorative_frame = True
-    if use_decorative_frame: 
-       # frame_pic = PIL.Image.open(os.path.join(os.getcwd(), 'farkas.jpeg'))
-        custom_img =result.resize((65,65))
-        
-        design.paste(custom_img, (width/2,height/2)) # These are the coordinates you need to change
-    return design
-    """
-
 def frameimageswithcrest(directory=None, color=(255,0,0), width=0.10):
     """ Saves a modfied version of each image in directory.
     
