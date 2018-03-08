@@ -32,8 +32,9 @@ def frame(original_image, color, percent_of_side):
     
     # Make the new image, starting with all transparent
     #frame_image = PIL.Image.new('RGBA', (width, height), (r, g, b, 255))
+    #Opens crest image, and pastes it on the bottom of the frame
     crest = PIL.Image.open(os.path.join(os.getcwd(), 'farkas.jpeg')) #Includes family crest, which is 'farkas.jpeg'
-    crest_size = ((height/9))
+    crest_size = ((height/7)) #Creates the size of the crest on each image, which is a proportion of the height of the image.
     small_crest = crest.resize((crest_size,crest_size))
     result = original_image.copy()
     use_decorative_frame = True
@@ -41,7 +42,7 @@ def frame(original_image, color, percent_of_side):
         frame_pic = PIL.Image.open(os.path.join(os.getcwd(), 'frame.jpg'))
         frame_pic = frame_pic.resize(result.size)
         result.paste(frame_pic, (0,0), mask=frame_mask)
-        result.paste(small_crest, ((width/2)-(crest_size/2),(height-(crest_size))))
+        result.paste(small_crest, ((width/2)-(crest_size/2),(height-(thickness+(crest_size))))) #Pastes the small crest in the middle of the image, and above the frame
     else:
         result.paste(frame_mask, (0,0), mask=frame_mask)
     return result
