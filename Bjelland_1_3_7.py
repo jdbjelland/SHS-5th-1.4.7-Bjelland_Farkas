@@ -5,11 +5,6 @@ import PIL.ImageDraw
 
 def frame(original_image, color, percent_of_side):
     """ Places a frame around a PIL.Image
-    Change line 37 so that use_decorative_frame is False to answer Step 10.
-    original_image must be a PIL.Image
-    Returns a new PIL.Image with a border, where
-    0 < percent_of_side < 1
-    is the border width as a portion of the shorter dimension of original_image
     """
     #set the radius of the rounded corners
     width, height = original_image.size
@@ -21,7 +16,7 @@ def frame(original_image, color, percent_of_side):
     
     #start with alpha=0 mask
     r, g, b = color
-    frame_mask = PIL.Image.new('RGBA', (width, height), (0, 0, 0, 0))
+    frame_mask = PIL.Image.new('RGBA', (width, height), (255, 215, 0, 0))
     drawing_layer = PIL.ImageDraw.Draw(frame_mask)
     
     # Draw four rectangles to fill frame area with alpha=255
@@ -35,16 +30,11 @@ def frame(original_image, color, percent_of_side):
     #Opens crest image, and pastes it on the bottom of the frame
     crest = PIL.Image.open(os.path.join(os.getcwd(), 'farkas.jpeg')) #Includes family crest, which is 'farkas.jpeg'
     crest_size = ((height/7)) #Creates the size of the crest on each image, which is a proportion of the height of the image.
-    small_crest = crest.resize((crest_size,crest_size))
+    small_crest = crest.resize((crest_size,crest_size)) #Resizes the crest for each new image based on that image's height.
     result = original_image.copy()
-    use_decorative_frame = True
-    if use_decorative_frame: 
-        frame_pic = PIL.Image.open(os.path.join(os.getcwd(), 'frame.jpg'))
-        frame_pic = frame_pic.resize(result.size)
-        result.paste(frame_pic, (0,0), mask=frame_mask)
-        result.paste(small_crest, ((width/2)-(crest_size/2),(height-(thickness+(crest_size))))) #Pastes the small crest in the middle of the image, and above the frame
-    else:
-        result.paste(frame_mask, (0,0), mask=frame_mask)
+    result.paste(frame_mask, (0,0), mask=frame_mask)
+    result.paste(small_crest, ((width/2)-(crest_size/2),(height-(thickness+(crest_size))))) #Pastes the small crest in the middle of the image, and above the frame
+
     return result
     
 def get_images(directory=None):
@@ -73,7 +63,7 @@ def get_images(directory=None):
             pass # do nothing with errors tying to open non-images
     return image_list, file_list
     
-def frameimageswithcrest(directory=None, color=(255,0,0), width=0.10):
+def frameimageswithcrest(directory=None, color=(255,215,0), width=0.10):
     """ Saves a modfied version of each image in directory.
     
     Uses current directory if no directory is specified. 
@@ -85,7 +75,7 @@ def frameimageswithcrest(directory=None, color=(255,0,0), width=0.10):
         directory = os.getcwd() # Use working directory if unspecified
         
     # Create a new directory 'modified'
-    new_directory = os.path.join(directory, 'modified')
+    new_directory = os.path.join(directory, 'modified') #Borrowed from example code
     try:
         os.mkdir(new_directory)
     except OSError:
